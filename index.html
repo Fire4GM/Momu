@@ -125,7 +125,7 @@ button {
   <button id="payBtn" onclick="openUPI()">Pay with a Kiss 😘</button>
 </div>
 
-<!-- Fake UPI Screen -->
+<!-- Fake UPI -->
 <div id="upi">
   <div class="upi-box">
     <h3>UPI Payment 😜</h3>
@@ -136,38 +136,25 @@ button {
 </div>
 
 <script>
-/* 🎶 MUSIC PLAYLIST (1:2 RATIO) */
-const playlist = [
-  { src: "finding_her.mp3", repeat: 1 },
-  { src: "tera_chehra.mp3", repeat: 2 }
-];
+/* 🎶 MUSIC SETUP WITH START TIMES */
+const normalSong = "tera_chehra.mp3";
+const kissSong = "finding_her.mp3";
 
-let songIndex = 0;
-let playCount = 0;
+const normalStart = 15;    // ⏱️ 15 seconds
+const kissStart = 120;     // ⏱️ 2 minutes
+
 const bgMusic = document.getElementById("bgMusic");
 bgMusic.volume = 0.4;
+bgMusic.loop = true;
 
-function playNextSong() {
-  const song = playlist[songIndex];
-  bgMusic.src = song.src;
-
-  bgMusic.play().catch(() => {
-    document.body.addEventListener("click", () => bgMusic.play(), { once: true });
-  });
-
-  bgMusic.onended = () => {
-    playCount++;
-    if (playCount < song.repeat) {
-      bgMusic.play();
-    } else {
-      playCount = 0;
-      songIndex = (songIndex + 1) % playlist.length;
-      playNextSong();
-    }
-  };
-}
-
-playNextSong();
+/* Start normal song from 15s */
+bgMusic.src = normalSong;
+bgMusic.addEventListener("loadedmetadata", () => {
+  bgMusic.currentTime = normalStart;
+});
+bgMusic.play().catch(() => {
+  document.body.addEventListener("click", () => bgMusic.play(), { once: true });
+});
 
 /* 💖 GAME LOGIC */
 let step = 0;
@@ -229,9 +216,19 @@ function openUPI() {
 
 function confirmPay() {
   upi.innerHTML = "<div class='upi-box'><h3>Processing... 😳</h3><p>Please wait 💓</p></div>";
+
   setTimeout(() => {
     upi.style.display = "none";
     paid = true;
+
+    // 💋 SWITCH SONG & START FROM 2 MINUTES
+    bgMusic.pause();
+    bgMusic.src = kissSong;
+    bgMusic.addEventListener("loadedmetadata", () => {
+      bgMusic.currentTime = kissStart;
+    }, { once: true });
+    bgMusic.play();
+
     alert("Payment Successful 💋");
     yes();
   }, 3000);
@@ -260,4 +257,3 @@ function createHeart() {
 
 </body>
 </html>
-
