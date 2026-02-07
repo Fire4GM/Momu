@@ -73,14 +73,13 @@ button {
   transition: width 0.5s;
 }
 
-/* Redirect Image Box */
+/* Redirect Box */
 .redirect-box {
   margin-top: 15px;
   cursor: pointer;
 }
 
 .redirect-box img {
-  display: block;
   width: 100%;
   height: 180px;
   object-fit: cover;
@@ -137,6 +136,7 @@ button {
 
 <body>
 
+<!-- 🎶 Background Music -->
 <audio id="bgMusic"></audio>
 
 <div class="container">
@@ -160,16 +160,15 @@ button {
 </div>
 
 <script>
-/* 🎶 MUSIC */
-const playlist = [
-  { src: "tera_chehra.mp3", repeat: 1, startAt: 15 }
-];
-
+/* 🎶 SINGLE SONG ONLY */
 const bgMusic = document.getElementById("bgMusic");
+bgMusic.src = "tera_chehra.mp3";
 bgMusic.volume = 0.4;
 
-bgMusic.src = playlist[0].src;
-bgMusic.onloadedmetadata = () => bgMusic.currentTime = 15;
+bgMusic.onloadedmetadata = () => {
+  bgMusic.currentTime = 15;
+};
+
 bgMusic.play().catch(() => {
   document.body.addEventListener("click", () => bgMusic.play(), { once: true });
 });
@@ -224,7 +223,7 @@ function yes() {
       <p>Shubham is officially the luckiest guy ❤️</p>
 
       <div class="redirect-box" onclick="window.location.href='next.html'">
-        <img src="redirect.jpeg" alt="Next Surprise">
+        <img src="redirect.jpeg">
         <div class="redirect-text">Tap for your next surprise 💝</div>
       </div>
     `;
