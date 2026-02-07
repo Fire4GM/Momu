@@ -84,6 +84,11 @@ header p {
 
 <body>
 
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" loop>
+    <source src="finding_her.mp3" type="audio/mpeg">
+</audio>
+
 <header>
     <h1>In Loving Memory</h1>
     <p>Forever remembered, forever loved</p>
@@ -94,7 +99,7 @@ header p {
     <img src="img5.jpeg" alt="Memory 2" onclick="openLightbox(this)">
     <img src="img7.jpeg" alt="Memory 3" onclick="openLightbox(this)">
     <img src="img8.jpeg" alt="Memory 4" onclick="openLightbox(this)">
-    <img src="img9.jpeg" alt="Memory 4" onclick="openLightbox(this)">
+    <img src="img9.jpeg" alt="Memory 5" onclick="openLightbox(this)">
 </section>
 
 <div class="lightbox" id="lightbox">
@@ -104,6 +109,14 @@ header p {
 </div>
 
 <script>
+const music = document.getElementById("bgMusic");
+
+// Start music from 1 min 58 sec = 118 seconds
+document.addEventListener("click", () => {
+    music.currentTime = 118;
+    music.play();
+}, { once: true });
+
 function openLightbox(img) {
     document.getElementById("lightbox").style.display = "flex";
     document.getElementById("lightboxImg").src = img.src;
