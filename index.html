@@ -73,6 +73,32 @@ button {
   transition: width 0.5s;
 }
 
+/* Redirect Image Box */
+.redirect-box {
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.redirect-box img {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  transition: transform 0.3s;
+}
+
+.redirect-box img:hover {
+  transform: scale(1.05);
+}
+
+.redirect-text {
+  margin-top: 8px;
+  color: #ff3e6c;
+  font-weight: 600;
+}
+
 /* Fake UPI */
 #upi {
   position: fixed;
@@ -111,7 +137,6 @@ button {
 
 <body>
 
-<!-- 🎵 Background Music -->
 <audio id="bgMusic"></audio>
 
 <div class="container">
@@ -125,7 +150,6 @@ button {
   <button id="payBtn" onclick="openUPI()">Pay with a Kiss 😘</button>
 </div>
 
-<!-- Fake UPI -->
 <div id="upi">
   <div class="upi-box">
     <h3>UPI Payment 😜</h3>
@@ -136,22 +160,16 @@ button {
 </div>
 
 <script>
-/* 🎶 MUSIC SETUP WITH START TIMES */
-const normalSong = "tera_chehra.mp3";
-const kissSong = "finding_her.mp3";
-
-const normalStart = 15;    // ⏱️ 15 seconds
-const kissStart = 120;     // ⏱️ 2 minutes
+/* 🎶 MUSIC */
+const playlist = [
+  { src: "tera_chehra.mp3", repeat: 1, startAt: 15 }
+];
 
 const bgMusic = document.getElementById("bgMusic");
 bgMusic.volume = 0.4;
-bgMusic.loop = true;
 
-/* Start normal song from 15s */
-bgMusic.src = normalSong;
-bgMusic.addEventListener("loadedmetadata", () => {
-  bgMusic.currentTime = normalStart;
-});
+bgMusic.src = playlist[0].src;
+bgMusic.onloadedmetadata = () => bgMusic.currentTime = 15;
 bgMusic.play().catch(() => {
   document.body.addEventListener("click", () => bgMusic.play(), { once: true });
 });
@@ -204,9 +222,13 @@ function yes() {
       <h2>YAYYYYY MOMU!!! 💕</h2>
       <p>Kiss received 💋😌</p>
       <p>Shubham is officially the luckiest guy ❤️</p>
-      <p>I love you so much 😘</p>
+
+      <div class="redirect-box" onclick="window.location.href='next.html'">
+        <img src="redirect.jpeg" alt="Next Surprise">
+        <div class="redirect-text">Tap for your next surprise 💝</div>
+      </div>
     `;
-    for (let i = 0; i < 50; i++) createHeart();
+    for (let i = 0; i < 40; i++) createHeart();
   }
 }
 
@@ -216,19 +238,9 @@ function openUPI() {
 
 function confirmPay() {
   upi.innerHTML = "<div class='upi-box'><h3>Processing... 😳</h3><p>Please wait 💓</p></div>";
-
   setTimeout(() => {
     upi.style.display = "none";
     paid = true;
-
-    // 💋 SWITCH SONG & START FROM 2 MINUTES
-    bgMusic.pause();
-    bgMusic.src = kissSong;
-    bgMusic.addEventListener("loadedmetadata", () => {
-      bgMusic.currentTime = kissStart;
-    }, { once: true });
-    bgMusic.play();
-
     alert("Payment Successful 💋");
     yes();
   }, 3000);
