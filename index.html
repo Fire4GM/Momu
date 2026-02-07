@@ -111,6 +111,9 @@ button {
 
 <body>
 
+<!-- 🎵 Background Music -->
+<audio id="bgMusic"></audio>
+
 <div class="container">
   <div class="progress"><div class="bar" id="bar"></div></div>
 
@@ -133,6 +136,40 @@ button {
 </div>
 
 <script>
+/* 🎶 MUSIC PLAYLIST (1:2 RATIO) */
+const playlist = [
+  { src: "tera_chehra.mp3", repeat: 1 },
+  { src: "finding_her.mp3", repeat: 2 }
+];
+
+let songIndex = 0;
+let playCount = 0;
+const bgMusic = document.getElementById("bgMusic");
+bgMusic.volume = 0.4;
+
+function playNextSong() {
+  const song = playlist[songIndex];
+  bgMusic.src = song.src;
+
+  bgMusic.play().catch(() => {
+    document.body.addEventListener("click", () => bgMusic.play(), { once: true });
+  });
+
+  bgMusic.onended = () => {
+    playCount++;
+    if (playCount < song.repeat) {
+      bgMusic.play();
+    } else {
+      playCount = 0;
+      songIndex = (songIndex + 1) % playlist.length;
+      playNextSong();
+    }
+  };
+}
+
+playNextSong();
+
+/* 💖 GAME LOGIC */
 let step = 0;
 let paid = false;
 
@@ -152,12 +189,9 @@ const upi = document.getElementById("upi");
 const noBtn = document.querySelector(".no");
 
 function yes() {
-
-  // ✅ RESET NO BUTTON EVERY QUESTION
   noBtn.innerText = "Nahi 🙃";
   noBtn.style.transform = "translate(0,0)";
 
-  // 🔥 Payment ONLY before final question
   if (step === data.length - 2 && !paid) {
     payBtn.style.display = "block";
     return;
@@ -172,14 +206,12 @@ function yes() {
 
   if (step < data.length) {
     qEl.innerText = data[step].q;
-
     if (data[step].img) {
       imgEl.src = data[step].img;
       imgEl.style.display = "block";
     } else {
       imgEl.style.display = "none";
     }
-
   } else {
     document.querySelector(".container").innerHTML = `
       <h2>YAYYYYY MOMU!!! 💕</h2>
@@ -197,7 +229,6 @@ function openUPI() {
 
 function confirmPay() {
   upi.innerHTML = "<div class='upi-box'><h3>Processing... 😳</h3><p>Please wait 💓</p></div>";
-
   setTimeout(() => {
     upi.style.display = "none";
     paid = true;
