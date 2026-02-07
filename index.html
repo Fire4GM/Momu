@@ -73,9 +73,9 @@ button {
   transition: width 0.5s;
 }
 
-/* Redirect Box */
+/* Redirect Image Box */
 .redirect-box {
-  margin-top: 15px;
+  margin-top: 20px;
   cursor: pointer;
 }
 
@@ -136,10 +136,9 @@ button {
 
 <body>
 
-<!-- 🎶 Background Music -->
 <audio id="bgMusic"></audio>
 
-<div class="container">
+<div class="container" id="mainBox">
   <div class="progress"><div class="bar" id="bar"></div></div>
 
   <img id="qImage">
@@ -160,20 +159,16 @@ button {
 </div>
 
 <script>
-/* 🎶 SINGLE SONG ONLY */
+/* 🎶 Music */
 const bgMusic = document.getElementById("bgMusic");
 bgMusic.src = "tera_chehra.mp3";
 bgMusic.volume = 0.4;
-
-bgMusic.onloadedmetadata = () => {
-  bgMusic.currentTime = 15;
-};
-
+bgMusic.onloadedmetadata = () => bgMusic.currentTime = 15;
 bgMusic.play().catch(() => {
   document.body.addEventListener("click", () => bgMusic.play(), { once: true });
 });
 
-/* 💖 GAME LOGIC */
+/* Game Data */
 let step = 0;
 let paid = false;
 
@@ -193,9 +188,6 @@ const upi = document.getElementById("upi");
 const noBtn = document.querySelector(".no");
 
 function yes() {
-  noBtn.innerText = "Nahi 🙃";
-  noBtn.style.transform = "translate(0,0)";
-
   if (step === data.length - 2 && !paid) {
     payBtn.style.display = "block";
     return;
@@ -203,7 +195,6 @@ function yes() {
 
   paid = false;
   payBtn.style.display = "none";
-
   step++;
   updateProgress();
   createHeart();
@@ -213,16 +204,14 @@ function yes() {
     if (data[step].img) {
       imgEl.src = data[step].img;
       imgEl.style.display = "block";
-    } else {
-      imgEl.style.display = "none";
     }
   } else {
-    document.querySelector(".container").innerHTML = `
+    document.getElementById("mainBox").innerHTML = `
       <h2>YAYYYYY MOMU!!! 💕</h2>
       <p>Kiss received 💋😌</p>
       <p>Shubham is officially the luckiest guy ❤️</p>
 
-      <div class="redirect-box" onclick="window.location.href='next.html'">
+      <div class="redirect-box" onclick="location.href='next.html'">
         <img src="redirect.jpeg">
         <div class="redirect-text">Tap for your next surprise 💝</div>
       </div>
@@ -236,13 +225,11 @@ function openUPI() {
 }
 
 function confirmPay() {
-  upi.innerHTML = "<div class='upi-box'><h3>Processing... 😳</h3><p>Please wait 💓</p></div>";
   setTimeout(() => {
     upi.style.display = "none";
     paid = true;
-    alert("Payment Successful 💋");
     yes();
-  }, 3000);
+  }, 2000);
 }
 
 function no() {
